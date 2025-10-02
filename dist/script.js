@@ -333,6 +333,28 @@ _core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.fadeOut = function (dur,
   }
   return this;
 };
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.fadeToggle = function (dur, display, fin) {
+  for (let i = 0; i < this.length; i++) {
+    if (window.getComputesStyle(this[i]).display === 'none') {
+      this[i].style.display = display || 'block';
+      const _fadeIn = complection => {
+        this[i].style.opacity = complection;
+      };
+      const ani = this.animateOverTime(dur, _fadeIn, fin);
+      requestAnimationFrame(ani);
+    } else {
+      const _fadeOut = complection => {
+        this[i].style.opacity = 1 - complection;
+        if (complection === 1) {
+          this[i].style.display = 'none';
+        }
+      };
+      const ani = this.animateOverTime(dur, _fadeOut, fin);
+      requestAnimationFrame(ani);
+    }
+  }
+  return this;
+};
 
 /***/ }),
 
