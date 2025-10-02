@@ -1,3 +1,3 @@
 import './lib/lib'
 
-$('.active').toggle().toggle();
+$('button').fadeIn(1800);

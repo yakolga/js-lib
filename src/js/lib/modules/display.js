@@ -39,5 +39,3 @@ $.prototype.toggle = function() {
 
     return this;
 };
-
-console.log($.prototype);
