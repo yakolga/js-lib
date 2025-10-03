@@ -1,5 +1,6 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+@use './general/variables.scss';
+@use './general/base.scss';
+@use './general/typography.scss';
+@use './components/ui.scss';
+@use './components/dropdown.scss';
+@use './helpers/classes.scss';
