@@ -1,5 +1,6 @@
-@use './general/variables.scss' as *;
+@use './general/variables.scss';
 @use './general/base.scss';
 @use './general/typography.scss';
 @use './components/ui.scss';
+@use './components/dropdown.scss';
 @use './helpers/classes.scss';
