@@ -33,7 +33,7 @@ _core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.dropdown = function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core */ "./src/js/lib/core.js");
 
-_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.modal = function () {
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.modal = function (created) {
   for (let i = 0; i < this.length; i++) {
     const target = this[i].getAttribute('data-target');
     (0,_core__WEBPACK_IMPORTED_MODULE_0__["default"])(this[i]).click(e => {
@@ -41,22 +41,75 @@ _core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.modal = function () {
       (0,_core__WEBPACK_IMPORTED_MODULE_0__["default"])(target).fadeIn(300);
       document.body.style.overflow = 'hidden';
     });
-  }
-  const closeElements = document.querySelectorAll('[data-close');
-  closeElements.forEach(elem => {
-    (0,_core__WEBPACK_IMPORTED_MODULE_0__["default"])(elem).click(e => {
-      (0,_core__WEBPACK_IMPORTED_MODULE_0__["default"])('.modal').fadeOut(300);
-      document.body.style.overflow = '';
+    const closeElements = document.querySelectorAll(`${target} [data-close]`);
+    closeElements.forEach(elem => {
+      (0,_core__WEBPACK_IMPORTED_MODULE_0__["default"])(elem).click(e => {
+        (0,_core__WEBPACK_IMPORTED_MODULE_0__["default"])(target).fadeOut(300);
+        document.body.style.overflow = '';
+        if (created) {
+          document.querySelector(target).remove();
+        }
+      });
     });
-  });
-  (0,_core__WEBPACK_IMPORTED_MODULE_0__["default"])('.modal').click(e => {
-    if (e.target.classList.contains('modal')) {
-      (0,_core__WEBPACK_IMPORTED_MODULE_0__["default"])('.modal').fadeOut(300);
-      document.body.style.overflow = '';
-    }
-  });
+    (0,_core__WEBPACK_IMPORTED_MODULE_0__["default"])(target).click(e => {
+      if (e.target.classList.contains('modal')) {
+        (0,_core__WEBPACK_IMPORTED_MODULE_0__["default"])(target).fadeOut(300);
+        document.body.style.overflow = '';
+        if (created) {
+          document.querySelector(target).remove();
+        }
+      }
+    });
+  }
 };
 (0,_core__WEBPACK_IMPORTED_MODULE_0__["default"])('[data-toggle="modal"]').modal();
+_core__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.createModal = function ({
+  text,
+  btns
+} = {}) {
+  for (let i = 0; i < this.length; i++) {
+    let modal = document.createElement('div');
+    modal.classList.add('modal');
+    modal.setAttribute('id', this[i].getAttribute('data-target').slice(1));
+    const buttons = [];
+    for (let j = 0; j < btns.count; j++) {
+      let btn = document.createElement('button');
+      btn.classList.add('btn', ...btns.settings[j][1]);
+      btn.textContent = btns.settings[j][0];
+      if (btns.settings[j][2]) {
+        btn.setAttribute('data-close', 'true');
+      }
+      if (btns.settings[j][3] && typeof btns.settings[j][3] === 'function') {
+        btn.addEventListener('click', btns.settings[j][3]);
+      }
+      buttons.push(btn);
+    }
+    modal.innerHTML = `
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <button class="close" data-close>
+                    <span>&times;</span>
+                </button>
+                <div class="modal-header">
+                    <div class="modal-title">
+                        ${text.title}
+                    </div>
+                </div>
+                <div class="modal-body">
+                    ${text.body}
+                </div>
+                <div class="modal-footer">
+                    
+                </div>
+            </div>
+        </div>
+        `;
+    modal.querySelector(".modal-footer").append(...buttons);
+    document.body.appendChild(modal);
+    (0,_core__WEBPACK_IMPORTED_MODULE_0__["default"])(this[i]).modal(true);
+    (0,_core__WEBPACK_IMPORTED_MODULE_0__["default"])(this[i].getAttribute('data-target')).fadeIn(500);
+  }
+};
 
 /***/ }),
 
@@ -525,6 +578,20 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_lib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lib/lib */ "./src/js/lib/lib.js");
 
+$('#trigger').click(() => $('#trigger').createModal({
+  text: {
+    title: 'Modal title',
+    body: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum minus doloremque nesciunt enim rem quam corporis? Dolorem pariatur magnam distinctio perferendis. Ratione dolorem voluptates iusto facilis odit veritatis, suscipit voluptatibus!'
+  },
+  btns: {
+    count: 3,
+    settings: [['Close', ['btn-danger', 'mr-10'], true], ['Save changes', ['btn-success'], false, () => {
+      alert('Данные сохранены');
+    }], ['Another btn', ['btn-warning', 'ml-10'], false, () => {
+      alert('Hello World');
+    }]]
+  }
+}));
 })();
 
 /******/ })()
