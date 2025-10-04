@@ -1,11 +1,11 @@
-import $ from "../core";
+import $ from '../core';
 
 $.prototype.html = function(content) {
     for (let i = 0; i < this.length; i++) {
         if (content) {
             this[i].innerHTML = content;
         } else {
-            return this.innerHTML;
+            return this[i].innerHTML;
         }
     }
 
@@ -27,14 +27,13 @@ $.prototype.eq = function(i) {
 
 $.prototype.index = function() {
     const parent = this[0].parentNode;
-    const child = [...parent.children];
+    const childs = [...parent.children];
 
     const findMyIndex = (item) => {
-        return item == this[0]
-    }
+        return item == this[0];
+    };
 
-    return child.findIndex(findMyIndex);
-
+    return childs.findIndex(findMyIndex);
 };
 
 $.prototype.find = function(selector) {
@@ -72,10 +71,6 @@ $.prototype.closest = function(selector) {
 
     for (let i = 0; i < this.length; i++) {
         this[i] = this[i].closest(selector);
-        if (!this[i]) {
-            this[i] = "";
-        }
-
         counter++;
     }
 
@@ -87,7 +82,7 @@ $.prototype.closest = function(selector) {
     return this;
 };
 
-$.prototype.siblings = function(selector) {
+$.prototype.siblings = function() {
     let numberOfItems = 0;
     let counter = 0;
 
